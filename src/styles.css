@@ -1,0 +1,364 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: #f4f7ff;
+  background: #020934;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.app-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  --stellarium-mode-blend: 0;
+  background:
+    linear-gradient(180deg, rgba(3, 7, 43, 0) 0%, rgba(7, 23, 88, 0.16) 45%, rgba(7, 44, 93, 0.42) 55%, rgba(1, 8, 44, 0.78) 100%),
+    #020934;
+}
+
+.map-canvas {
+  position: absolute;
+  inset: 0;
+  background: #020934;
+}
+
+.app-shell.is-stellarium .map-canvas {
+  cursor: grab;
+}
+
+.app-shell.is-stellarium .map-canvas:active {
+  cursor: grabbing;
+}
+
+.app-shell.is-stellarium {
+  background: #020934;
+}
+
+.map-canvas::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(1, 4, 31, 0.8) 0%, rgba(1, 4, 31, 0.36) 44%, rgba(9, 38, 102, 0.1) 57%, rgba(1, 5, 34, 0.48) 100%),
+    radial-gradient(ellipse at 50% 54%, rgba(41, 105, 178, 0.24) 0%, rgba(41, 105, 178, 0.08) 42%, rgba(41, 105, 178, 0) 68%);
+  mix-blend-mode: screen;
+  opacity: calc(1 - var(--stellarium-mode-blend));
+}
+
+.maplibregl-canvas {
+  filter: saturate(0.9) brightness(0.9) contrast(1.04);
+}
+
+.maplibregl-ctrl-attrib {
+  color: rgba(235, 242, 255, 0.78);
+  background: rgba(1, 6, 33, 0.52);
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #a8c8ff;
+}
+
+.title-block {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  pointer-events: none;
+  max-width: min(620px, calc(100vw - 300px));
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.title-block .overline {
+  margin: 0 0 4px;
+  color: #ffd45e;
+  font-family: "Marker Felt", "Comic Sans MS", "Trebuchet MS", cursive;
+  font-size: 1.02rem;
+}
+
+.title-block h1 {
+  margin: 0;
+  color: #f9fbff;
+  font-family: "Marker Felt", "Comic Sans MS", "Trebuchet MS", cursive;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.labels-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  pointer-events: none;
+}
+
+.sky-label {
+  position: absolute;
+  display: block;
+  max-width: 260px;
+  min-width: 82px;
+  padding: 1px 4px;
+  border: 0;
+  border-radius: 0;
+  color: #ffd75d;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.74),
+    0 0 8px rgba(255, 205, 55, 0.12);
+  transform: translate(-4px, -4px);
+}
+
+.sky-label strong {
+  display: block;
+  font-family: "Marker Felt", "Comic Sans MS", "Trebuchet MS", cursive;
+  font-size: 1.07rem;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.sky-label span {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 221, 98, 0.86);
+  font-size: 0.74rem;
+  line-height: 1.14;
+}
+
+.sky-label:hover,
+.sky-label:focus-visible,
+.sky-label.is-selected {
+  color: #fff06d;
+  outline: none;
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.78),
+    0 0 12px rgba(255, 219, 38, 0.42);
+}
+
+.sky-label:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 232, 99, 0.78);
+}
+
+.horizon-hint {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+  color: rgba(255, 217, 87, 0.78);
+  font-family: "Marker Felt", "Comic Sans MS", "Trebuchet MS", cursive;
+  font-size: 0.92rem;
+  line-height: 1;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  transform: rotate(-7deg);
+}
+
+.info-panel {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 18;
+  width: min(320px, calc(100vw - 36px));
+  padding: 14px 16px 16px;
+  border: 1px solid rgba(111, 174, 230, 0.24);
+  border-radius: 8px;
+  background: rgba(2, 8, 42, 0.68);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.panel-kicker {
+  margin: 0 0 4px;
+  color: #75baff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.info-panel h2 {
+  margin: 0;
+  color: #ffe15c;
+  font-family: "Marker Felt", "Comic Sans MS", "Trebuchet MS", cursive;
+  font-size: 1.55rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.info-panel p {
+  margin: 4px 0 10px;
+  color: #ffffff;
+  font-size: 0.94rem;
+}
+
+.info-panel span {
+  display: block;
+  color: rgba(240, 245, 255, 0.78);
+  font-size: 0.86rem;
+}
+
+.tool-dock {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(8, 40px) 132px repeat(2, 168px);
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid rgba(117, 186, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(2, 8, 42, 0.7);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+.tool-button {
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(143, 192, 255, 0.22);
+  border-radius: 8px;
+  color: rgba(238, 246, 255, 0.82);
+  background: rgba(5, 18, 70, 0.72);
+  cursor: pointer;
+}
+
+.tool-button:hover,
+.tool-button:focus-visible,
+.tool-button.is-active {
+  border-color: rgba(255, 226, 88, 0.58);
+  color: #ffe258;
+  outline: none;
+  background: rgba(14, 45, 112, 0.82);
+}
+
+.reset-camera-button {
+  grid-template-columns: 18px 1fr;
+  gap: 7px;
+  width: 132px;
+  padding: 0 10px;
+  color: rgba(238, 246, 255, 0.9);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.reset-camera-button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phase-control {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  min-width: 0;
+  color: rgba(238, 246, 255, 0.82);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.phase-control input {
+  width: 154px;
+  accent-color: #ffe258;
+}
+
+@media (max-width: 980px) {
+  .title-block {
+    max-width: calc(100vw - 36px);
+  }
+
+  .tool-dock {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: auto;
+    grid-template-columns: repeat(4, 38px);
+  }
+
+  .reset-camera-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 38px;
+  }
+
+  .phase-control {
+    grid-column: 1 / -1;
+  }
+
+  .phase-control input {
+    width: 100%;
+  }
+
+  .info-panel {
+    left: 12px;
+    bottom: 12px;
+    width: min(276px, calc(100vw - 196px));
+  }
+}
+
+@media (max-width: 680px) {
+  .title-block {
+    top: 12px;
+    left: 12px;
+  }
+
+  .title-block h1 {
+    font-size: 1.48rem;
+  }
+
+  .sky-label {
+    max-width: 150px;
+  }
+
+  .sky-label strong {
+    font-size: 0.82rem;
+  }
+
+  .sky-label span {
+    display: none;
+  }
+
+  .horizon-hint {
+    font-size: 0.72rem;
+  }
+
+  .info-panel {
+    display: none;
+  }
+}
