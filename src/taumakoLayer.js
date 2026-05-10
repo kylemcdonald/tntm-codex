@@ -1338,7 +1338,7 @@ export function createTaumakoLayer(stateRef) {
         this.map.triggerRepaint();
       };
 
-      const boatTexture = loader.load(assetUrl('/boat.png'), textureLoaded);
+      const boatTexture = loader.load(assetUrl('/boat-raster.png'), textureLoaded);
       boatTexture.colorSpace = THREE.SRGBColorSpace;
 
       this.markerGroup = new THREE.Group();
