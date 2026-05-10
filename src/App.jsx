@@ -908,18 +908,6 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) {
-      return;
-    }
-
-    if (!stellariumMode && cameraModeBlendRef.current <= 0.001) {
-      map.setVerticalFieldOfView(wideFov ? WIDE_FOV : REGULAR_FOV);
-    }
-    map.triggerRepaint();
-  }, [wideFov, stellariumMode]);
-
   function animateMapFov(map, from, to, duration = CAMERA_MODE_TRANSITION_MS) {
     if (fovAnimationRef.current !== null) {
       window.cancelAnimationFrame(fovAnimationRef.current);
@@ -1082,20 +1070,21 @@ export default function App() {
   }
 
   function toggleFov() {
+    const nextWide = !wideFov;
+    const next = nextWide ? WIDE_FOV : REGULAR_FOV;
+
     if (stellariumMode) {
-      if (stellariumFovAnimationRef.current !== null) {
-        window.cancelAnimationFrame(stellariumFovAnimationRef.current);
-        stellariumFovAnimationRef.current = null;
-      }
-      setStellariumFov((value) => {
-        const next = value > 48 ? REGULAR_FOV : WIDE_FOV;
-        setWideFov(next > 48);
-        return next;
-      });
+      animateStellariumFov(stellariumFov, next, 520);
+      setWideFov(nextWide);
       return;
     }
 
-    setWideFov((value) => !value);
+    const map = mapRef.current;
+    const currentFov = map?.getVerticalFieldOfView?.() ?? (wideFov ? WIDE_FOV : REGULAR_FOV);
+    setWideFov(nextWide);
+    if (map) {
+      animateMapFov(map, currentFov, next, 520);
+    }
   }
 
   return (
@@ -1161,9 +1150,9 @@ export default function App() {
           onClick={toggleCameraMode}
         />
         <IconToggle
-          active={stellariumMode ? stellariumFov > 48 : wideFov}
+          active={wideFov}
           icon={Aperture}
-          label={(stellariumMode ? stellariumFov > 48 : wideFov) ? 'Use regular FOV' : 'Use wide FOV'}
+          label={wideFov ? 'Use regular FOV' : 'Use wide FOV'}
           onClick={toggleFov}
         />
         <button
