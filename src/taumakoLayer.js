@@ -11,7 +11,7 @@ const ARC_BLUE = '#1c8dff';
 const GRID_BLUE = '#66bdff';
 const SKY_RADIUS_EARTH_RADII = 500;
 const SKY_HORIZON_Y = 55.5;
-const BOAT_ASPECT_RATIO = 30.11 / 63.14;
+const BOAT_ASPECT_RATIO = 512 / 1074;
 const STELLARIUM_CAMERA_RADIUS = 1;
 const STELLARIUM_CAMERA_NEAR = 0.0001;
 const STELLARIUM_CAMERA_FAR = SKY_RADIUS_EARTH_RADII * 4;
@@ -22,7 +22,7 @@ const STELLARIUM_HORIZON_ALTITUDE = THREE.MathUtils.degToRad(-0.35);
 const SEASONAL_TILT_DEGREES = 23.4;
 const REFERENCE_LST_HOURS = 11;
 const SURFACE_ALTITUDE_METERS = 0;
-const DEBUG_CAMERA_TRANSITIONS = true;
+const DEBUG_CAMERA_TRANSITIONS = false;
 const ASSET_BASE_URL = import.meta.env.BASE_URL || '/';
 
 let starTexture;
@@ -1338,7 +1338,7 @@ export function createTaumakoLayer(stateRef) {
         this.map.triggerRepaint();
       };
 
-      const boatTexture = loader.load(assetUrl('/boat.svg'), textureLoaded);
+      const boatTexture = loader.load(assetUrl('/boat.png'), textureLoaded);
       boatTexture.colorSpace = THREE.SRGBColorSpace;
 
       this.markerGroup = new THREE.Group();
