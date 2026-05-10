@@ -23,8 +23,13 @@ const SEASONAL_TILT_DEGREES = 23.4;
 const REFERENCE_LST_HOURS = 11;
 const SURFACE_ALTITUDE_METERS = 0;
 const DEBUG_CAMERA_TRANSITIONS = true;
+const ASSET_BASE_URL = import.meta.env.BASE_URL || '/';
 
 let starTexture;
+
+function assetUrl(path) {
+  return `${ASSET_BASE_URL}${path.replace(/^\/+/, '')}`;
+}
 
 const SKY_VERTEX_PROJECT = `
   vec4 clip = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -343,7 +348,7 @@ function loadCompassTexture(onLoad) {
     texture.magFilter = THREE.LinearFilter;
     onLoad(texture);
   };
-  image.src = '/compass.png';
+  image.src = assetUrl('/compass.png');
 }
 
 function makeLabelTexture(name, association) {
@@ -1333,7 +1338,7 @@ export function createTaumakoLayer(stateRef) {
         this.map.triggerRepaint();
       };
 
-      const boatTexture = loader.load('/boat.svg', textureLoaded);
+      const boatTexture = loader.load(assetUrl('/boat.svg'), textureLoaded);
       boatTexture.colorSpace = THREE.SRGBColorSpace;
 
       this.markerGroup = new THREE.Group();
